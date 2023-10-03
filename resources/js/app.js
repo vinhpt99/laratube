@@ -15,9 +15,10 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
-
+import SubscribeButton from './components/subscribeButton.vue';
+import ChannelUpload from './components/ChannelUpload.vue';
+app.component('subscribe-button', SubscribeButton);
+app.component('channel-upload', ChannelUpload);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
