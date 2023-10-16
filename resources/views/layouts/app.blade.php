@@ -15,6 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -84,7 +85,7 @@
     </div>
     <script>
         
-        window.AuthUser = '{!! auth()->user() !!}';
+      window.AuthUser = '{!! auth()->user() !!}';
         
       window.__auth = function () {
             try {
@@ -94,5 +95,7 @@
             }
         } 
     </script>
+     @vite('resources/js/app.js')
+     @yield('scripts')
 </body>
 </html>

@@ -87,22 +87,32 @@
       <div class="card p-3" v-else>
         <div class="my-4" v-for="video in videos">
           <div class="progress mb-3">
-              <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" :style="{width: `${this.progress[video.name]}%`}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar progress-bar-striped progress-bar-animated " 
+                   role="progressbar" 
+                   :style="{ width: `${video.percentage || progress[video.name]}%` }"
+                   aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                  
+                   {{video.percentage ? ( video.percentage === 100 ? 'Video Processing completed.' : 'Processing' ) : 'Uploading'  }}
+              </div>
           </div>
           <div class="row">
 
               <div class="col-md-4">
-                  <div class="d-flex justify-content-center align-items-center" style="height: 180px; color: white; font-size: 18px; background: #808080;">
+                  <div v-if="!video.thumbnail" class="d-flex justify-content-center align-items-center" style="height: 180px; color: white; font-size: 18px; background: #808080;">
                           Loading thumbnail ...
                   </div>
+                  <img v-else :src="video.thumbnail" style="width: 100%;" alt="">
               </div>
 
               <div class="col-md-4">
-                  <h4 class="text-center">
-                       {{video.name }}
+                  
+                  <a v-if="video.percentage && video.percentage === 100" target="_blank" :href="`/videos/${video.id}`">
+                      {{ video.title }}
+                  </a>
+                  <h4 v-else class="text-center">
+                       {{video.title || video.name }}
                   </h4>
-
-
+                  
               </div>
           </div>
       </div>
@@ -130,7 +140,9 @@ export default {
         return {
             selected: false,
             videos: [],
-            progress: {}
+            progress: {},
+            uploads: [],
+            intervals: {}
         }
   },
   methods: {
@@ -148,8 +160,36 @@ export default {
                     this.progress[video.name] = Math.ceil((event.loaded/event.total)*100)
                     this.$forceUpdate()
                 }
-            })   
+            }).then(({data}) => { 
+                this.uploads = [
+                      ...this.uploads,
+                      data
+                ]
+
+            }) 
        })
+       
+       axios.all(uploaders)
+            .then(() => {
+                 this.videos = this.uploads
+                 this.videos.forEach(video => {
+                      this.intervals[video.id] = setInterval(() => {
+                          axios.get(`/videos/${video.id}`).then(({ data }) => {
+                                 if(data.percentage === 100) {
+                                  clearInterval(this.intervals[video.id])
+                                 }
+
+                                 this.videos = this.videos.map(item => {
+                                      if(item.id === data.id) {
+                                        return data
+                                      }
+                                      return video
+                                 })
+                          })
+                          
+                      }, 3000)
+                 })
+            })
          
     }
   }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Chanel;
+
 use Illuminate\Http\Request;
+use App\Jobs\Videos\ConvertForStreaming;
+use App\Jobs\Videos\CreateVideoThumbnail;
 
 class UploadVideoController extends Controller
 {
@@ -17,9 +20,13 @@ class UploadVideoController extends Controller
 
     public function store(String $id) {
         $chanel = Chanel::find($id);
-        return $chanel->videos()->create([
+        $video = $chanel->videos()->create([
             'title' => request()->title,
             'path'  => request()->video->store("channels/{$chanel->id}")
         ]);
+        CreateVideoThumbnail::dispatch($video);
+        ConvertForStreaming::dispatch($video);
+        return $video;
+     
     }
 }

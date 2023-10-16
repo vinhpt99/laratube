@@ -16,6 +16,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
-        "numeral": "^2.0.6"
+        "numeral": "^2.0.6",
+        "video.js": "^8.6.0"
     }
 }

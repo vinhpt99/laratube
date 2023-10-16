@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->uuid('id');
             $table->uuid('chanel_id');
+           
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('path');
@@ -27,5 +28,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('videos');
+        Schema::table('videos', function($table) {
+            $table->dropColumn('percentage');
+        });
     }
 };
