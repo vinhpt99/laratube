@@ -16,10 +16,12 @@ import { createApp } from 'vue';
 const app = createApp({});
 import SubscribeButton from './components/subscribeButton.vue';
 import ChannelUpload from './components/ChannelUpload.vue';
-import VideoPlayer from './components/VideoPlayer.vue'
+import VideoPlayer from './components/VideoPlayer.vue';
+import Vote from './components/Vote.vue';
 app.component('subscribe-button', SubscribeButton);
 app.component('channel-upload', ChannelUpload);
 app.component('video-player', VideoPlayer);
+app.component('vote', Vote);
 
 /**
  * The following block of code may be used to automatically register your

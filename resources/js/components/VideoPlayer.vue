@@ -4,8 +4,9 @@
   </div>
 </template>
 <script>
-  // Importing video-js
-  import videojs from 'video.js';
+
+import axios from 'axios';
+import videojs from 'video.js';
   export default {
      name: 'VideoJsPlayer',
      props: {
@@ -19,6 +20,8 @@
      data() {
         return {
              player: null,
+             viewLogged: false,
+             btnReload: null,
              options: {
                   autoplay: true,
                   controls: true,
@@ -36,13 +39,41 @@
   // initializing the video player
   // when the component is being mounted
   created() {
-       this.options.sources.src = this.videoSource
+      this.options.sources.src = this.videoSource
   },
   mounted() {
-     this.player = videojs(this.$refs.videoJsPlayer, this.options,() => {
-        this.player.log('video player ready', this);
-     });
+   this.player = videojs(this.$refs.videoJsPlayer, this.options,() => {
+          const videoPlay = this.player;
+          videoPlay.on('timeupdate', function() {
+                var percentagePlayed = Math.ceil(videoPlay.currentTime() / videoPlay.duration() * 100)
+                if(percentagePlayed > 5 && !this.viewLogged) {
+                      axios.put('/videos/' + window.CURRENT_VIDEO)
+                      this.viewLogged = true;
+                }
+          })
+          this.btnReload  = document.querySelector(".vjs-play-control");
+          this.btnReload.addEventListener('click', this.handleReloadButtonClick)
+   });
   },
+
+  methods: {
+   handleReloadButtonClick() {
+         if(this.btnReload.title === 'Replay') {
+            let viewReload = true
+            const videoPlay = this.player;
+            videoPlay.on('timeupdate', function() {
+                var percentagePlayed = Math.ceil(videoPlay.currentTime() / videoPlay.duration() * 100)
+                if(percentagePlayed > 5 && viewReload) {
+                      console.log(percentagePlayed)
+                      axios.put('/videos/' + window.CURRENT_VIDEO)
+                      viewReload = false
+                }
+           })
+         }
+        
+      }  
+  },
+  
   // destroying the video player
   // when the component is being destroyed
   beforeDestroy() {
@@ -52,10 +83,6 @@
   }
 }
 </script>
-<style>
-.vjs-default-skin {
-    width: 100%;
-}
-</style>
+
 
     
