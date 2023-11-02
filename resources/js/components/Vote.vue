@@ -9,6 +9,7 @@
 
 <script>
   import numeral from 'numeral'
+  import axios from 'axios'
   export default {
       name: "Vote",
       props: {
@@ -20,17 +21,22 @@
           },
           default_votes: {
               required: true,
-              default: () => []
+              default: null
           },
           entity_owner: {
               required: true,
-              default: () => ({})
+              default: null
           },
+          entity_id : {
+            required: true,
+            default: null
+          }
          
       },
       data() {
           return {
               votes: this.default_votes,
+              test: this.default_votes
           }
       },
       computed: {
@@ -58,11 +64,37 @@
       },
       methods: {
           vote(type) {
-              if (__auth() && __auth().id === this.entity_owner) {
-                  return alert('You cannot vote this item.')
+              if (! __auth() ) {
+                  return alert('Please login to vote.')
+              }
+              if( __auth().id === this.entity_owner) {
+                 return alert('You can not vote this item.')
               }
               if (type === 'up' && this.upvoted) return
               if (type === 'down' && this.downvoted) return
+              
+              axios.post(`/votes/${this.entity_id}/${type}`).then(({data}) => {
+                 if(this.upvoted || this.downvoted) {
+                        console.log("default_votes", this.default_votes);
+                      
+                     this.votes = this.votes.map(vote => {
+                       
+                        if(vote.user_id === __auth().id) {
+                              return data;
+                        }
+                       
+                        return vote
+                     })
+                 }
+                 else {
+                    this.votes = [
+                        ...this.votes,
+                        data
+                    ]
+                 }
+
+              })
+           
           },
           getUrlIconSvg(name) {
               return `${this.baseUrl}/${name}.svg`

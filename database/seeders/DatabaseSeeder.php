@@ -45,6 +45,22 @@ class DatabaseSeeder extends Seeder
         \App\Subscription::factory(100)->create([
             'chanel_id' => $channel2->id
        ]);
+
+       $video = \App\Video::factory()->create([
+           'chanel_id' => $channel1->id
+       ]);
+
+       \App\Comment::factory(50)->create([
+           'video_id' => $video->id
+       ]);
+
+       
+        $comment = \App\Comment::first();
+
+        \App\Comment::factory(50)->create([
+            'video_id' => $video->id,
+            'comment_id' => $comment->id
+        ]);
     }
 
 }

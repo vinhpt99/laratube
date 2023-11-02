@@ -20,4 +20,13 @@ class Video extends Model
     public function votes() {
         return $this->morphMany(Vote::class, 'voteable');
     }
+
+    public function comment() {
+       
+        return Comment::select('comments.*', 'users.name')
+                        ->join('users', 'users.id', '=', 'comments.user_id')
+                        ->where('comments.video_id', $this->id)
+                        ->whereNull('comment_id');
+       
+    }
 }

@@ -33,7 +33,8 @@
                             <div>
                                     <vote   entity_owner="{{ $video->channel->user_id }}" 
                                             :base-url='@json(asset('/iconSvg/'))'
-                                            :default_votes='{{ $video->votes }}' /> 
+                                            :default_votes='{{ $video->votes }}' 
+                                            entity_id="{{$video->id}}"/> 
                             </div>
                         </div>
         
@@ -68,6 +69,8 @@
                     @if ($video->editable())
                         </form>
                     @endif
+                    <comment :video="{{$video}}" />
+                    
                 </div>
             </div>
         </div>
@@ -80,6 +83,14 @@
     .vjs-default-skin {
         width: 100%;
     } 
+</style>
+<style>
+    .w-full {
+        width: 100% !important;
+    }
+    .w-80 {
+        width: 80% !important;
+    }
 </style>
 @endsection
 @section('scripts')

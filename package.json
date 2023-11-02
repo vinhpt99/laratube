@@ -18,6 +18,8 @@
     },
     "dependencies": {
         "numeral": "^2.0.6",
-        "video.js": "^8.6.0"
+        "video.js": "^8.6.0",
+        "vue-avatar": "^2.3.3",
+        "vue3-avatar": "^1.0.1"
     }
 }
