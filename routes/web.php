@@ -29,6 +29,7 @@ Route::get('videos/{video}',   [VideoController::class, 'show']);
 Route::put('videos/{video}', [VideoController::class, 'updateViews']);
 Route::put('videos/{video}/update', [VideoController::class, 'update'])->middleware(['auth'])->name('videos.update');
 Route::get('video/{video}/comments', [CommentController::class, 'index']);
+Route::get('videos/comments/{comment}/replies', [CommentController::class, 'show']);
 Route::middleware(['auth'])->group(function() {
     Route::post('votes/{video}/{type}', [VoteController::class, 'vote']);
     Route::post('channels/{channel}/videos', [UploadVideoController::class, 'store']);

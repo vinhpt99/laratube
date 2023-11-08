@@ -1,0 +1,68 @@
+<template>
+  <div>
+    <div class="form-inline my-4 w-full">
+      <input type="text" class="form-control form-control-sm w-80">
+      <button class="btn btn-sm btn-primary mt-2">
+          <small>Add comment</small>
+      </button>
+    </div>
+    <div class="media mt-3" v-for="reply in replies.data">
+          <a class="mr-3" href="#">
+               <avatar :name="reply.user.name" class="mr-3" :size="30"></avatar>
+          </a>
+          <div class="media-body">
+              <h6 class="mt-0">{{ reply.user.name }}</h6>
+              <small>
+                  {{ reply.body }}
+              </small>
+          </div>
+    </div>
+    <div v-if="comment.repliesCount > 0 && replies.next_page_url" class="text-center">
+       <button @click="fetchReplies" class="btn btn-info btn-sm">Load Replies</button>
+    </div>
+  </div>
+</template>
+<script>
+import axios from "axios";
+import Avatar from "vue3-avatar";
+export default {
+  name: "Replies",
+  components: {
+    avatar: Avatar
+  },
+  props: {
+          comment: {
+            type: Object,
+            default() {
+                return null;
+            } 
+          },
+      },
+  data() {
+    return {
+       replies: {
+         data: [],
+         next_page_url: `comments/${this.comment.id}/replies`
+       }
+    }
+  },
+  mounted() {
+       
+  },
+  methods: {
+    fetchReplies() {
+       axios.get(this.replies.next_page_url).then(({data}) => {
+            this.replies = {
+              ...data,
+              data: [
+                ...this.replies.data,
+                ...data.data
+              ]
+
+            }
+       })
+    }
+  }
+}
+
+</script>

@@ -19,11 +19,13 @@ import Comment from './components/Comment.vue'
 import ChannelUpload from './components/ChannelUpload.vue';
 import VideoPlayer from './components/VideoPlayer.vue';
 import Vote from './components/Vote.vue';
+import Replies from './components/Replies.vue';
 app.component('subscribe-button', SubscribeButton);
 app.component('channel-upload', ChannelUpload);
 app.component('video-player', VideoPlayer);
 app.component('vote', Vote);
 app.component('comment', Comment);
+app.component('replies', Replies);
 
 
 /**

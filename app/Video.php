@@ -22,11 +22,6 @@ class Video extends Model
     }
 
     public function comment() {
-       
-        return Comment::select('comments.*', 'users.name')
-                        ->join('users', 'users.id', '=', 'comments.user_id')
-                        ->where('comments.video_id', $this->id)
-                        ->whereNull('comment_id');
-       
+         return $this->hasMany(Comment::class, 'video_id')->whereNotNull('video_id');
     }
 }
