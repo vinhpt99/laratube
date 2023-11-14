@@ -1,8 +1,8 @@
 <template>
   <div>
-          <img :src="getUrlIconSvg('thumbs-up')" alt="Thumbs Up Icon" class="thumbs-up" @click="vote('up')" :class="{ 'thumbs-up-active': upvoted }">
+          <img :src="thumbsUpIconPath" alt="Thumbs Up Icon" class="thumbs-up" @click="vote('up')" :class="{ 'thumbs-up-active': upvoted }">
               {{ upvotes_count }}
-          <img :src="getUrlIconSvg('thumbs-dow')" alt="Thumbs Down Icon" class="thumbs-down"  @click="vote('down')" :class="{ 'thumbs-down-active': downvoted }">     
+          <img :src="thumbsDownIconPath" alt="Thumbs Down Icon" class="thumbs-down"  @click="vote('down')" :class="{ 'thumbs-down-active': downvoted }">     
               {{ downvotes_count }}
 </div>
 </template>
@@ -10,18 +10,14 @@
 <script>
   import numeral from 'numeral'
   import axios from 'axios'
+  import thumbsUpIcon from '@/thumbs-up.svg';
+  import thumbsDownIcon from '@/thumbs-dow.svg';
   export default {
       name: "Vote",
       props: {
-          baseUrl: {
-            type: String,
-            default() {
-                return null;
-            } 
-          },
           default_votes: {
               required: true,
-              default: null
+              default: null,
           },
           entity_owner: {
               required: true,
@@ -30,17 +26,19 @@
           entity_id : {
             required: true,
             default: null
-          }
-         
+          },
+          
       },
       data() {
           return {
-              votes: this.default_votes,
-              test: this.default_votes
+              votes: this.isObjectCheck(this.default_votes) ? [] : this.default_votes,
+              thumbsUpIconPath: thumbsUpIcon,
+              thumbsDownIconPath: thumbsDownIcon
           }
       },
       computed: {
           upvotes() {
+              console.log("this.votes", this.votes)
               return this.votes.filter(v => v.type === 'up')
           },
           downvotes() {
@@ -63,6 +61,11 @@
           }
       },
       methods: {
+           isObjectCheck(value) {
+               if(value !== null && typeof value === 'object' && !Array.isArray(value)) 
+                   return true
+               return false
+          },
           vote(type) {
               if (! __auth() ) {
                   return alert('Please login to vote.')
@@ -72,7 +75,7 @@
               }
               if (type === 'up' && this.upvoted) return
               if (type === 'down' && this.downvoted) return
-              
+
               axios.post(`/votes/${this.entity_id}/${type}`).then(({data}) => {
                  if(this.upvoted || this.downvoted) {
                         console.log("default_votes", this.default_votes);
@@ -95,9 +98,6 @@
 
               })
            
-          },
-          getUrlIconSvg(name) {
-              return `${this.baseUrl}/${name}.svg`
           }
       }
   }

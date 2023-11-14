@@ -22,6 +22,6 @@ class Video extends Model
     }
 
     public function comment() {
-         return $this->hasMany(Comment::class, 'video_id')->whereNotNull('video_id');
+         return $this->hasMany(Comment::class, 'video_id')->whereNull('comment_id')->orderBy('created_at', 'DESC');
     }
 }

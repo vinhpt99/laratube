@@ -30,9 +30,9 @@
                                 {{ $video->views }} {{ Str::plural('view', $video->views) }}
                             </div>
         
-                            <div>
+                            <div>    
+                                   
                                     <vote   entity_owner="{{ $video->channel->user_id }}" 
-                                            :base-url='@json(asset('/iconSvg/'))'
                                             :default_votes='{{ $video->votes }}' 
                                             entity_id="{{$video->id}}"/> 
                             </div>

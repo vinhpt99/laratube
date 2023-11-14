@@ -31,7 +31,8 @@ Route::put('videos/{video}/update', [VideoController::class, 'update'])->middlew
 Route::get('video/{video}/comments', [CommentController::class, 'index']);
 Route::get('videos/comments/{comment}/replies', [CommentController::class, 'show']);
 Route::middleware(['auth'])->group(function() {
-    Route::post('votes/{video}/{type}', [VoteController::class, 'vote']);
+    Route::post('comments/{video}', [CommentController::class, 'store']);
+    Route::post('votes/{entityId}/{type}', [VoteController::class, 'vote']);
     Route::post('channels/{channel}/videos', [UploadVideoController::class, 'store']);
     Route::get('channels/{channel}/videos', [UploadVideoController::class, 'index'])->name('channel.upload');
     Route::resource('channels/{channel}/subscriptions', App\Http\Controllers\SubscriptionController ::class)->only(['store', 'destroy']);
