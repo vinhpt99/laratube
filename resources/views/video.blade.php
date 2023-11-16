@@ -69,7 +69,7 @@
                     @if ($video->editable())
                         </form>
                     @endif
-                    <comment :video="{{$video}}" />
+                    <comments :video="{{$video}}" />
                     
                 </div>
             </div>

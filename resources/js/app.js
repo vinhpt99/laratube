@@ -15,17 +15,19 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 import SubscribeButton from './components/subscribeButton.vue';
-import Comment from './components/Comment.vue'
+import Comments from './components/Comments.vue'
 import ChannelUpload from './components/ChannelUpload.vue';
 import VideoPlayer from './components/VideoPlayer.vue';
 import Vote from './components/Vote.vue';
 import Replies from './components/Replies.vue';
+import Comment from './components/Comment.vue';
 app.component('subscribe-button', SubscribeButton);
 app.component('channel-upload', ChannelUpload);
 app.component('video-player', VideoPlayer);
 app.component('vote', Vote);
-app.component('comment', Comment);
+app.component('comments', Comments);
 app.component('replies', Replies);
+app.component('comment', Comment);
 
 
 /**

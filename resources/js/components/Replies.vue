@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="form-inline my-4 w-full">
+    <!-- <div class="form-inline my-4 w-full">
       <input type="text" class="form-control form-control-sm w-80">
       <button class="btn btn-sm btn-primary mt-2">
           <small>Add reply</small>
       </button>
-    </div>
+    </div> -->
     <div class="card">
       <div class="media my-3" style="margin-left: 20px;" v-for="reply in replies.data">
         <a class="mr-3" href="#">
@@ -65,6 +65,16 @@ export default {
 
             }
        })
+    },
+    addReply(reply) {
+      console.log("reply>>", reply)
+      this.replies = {
+        ...this.replies,
+        data: [
+          reply,
+          ...this.replies.data
+        ]
+      }
     }
   }
 }
