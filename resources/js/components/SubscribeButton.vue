@@ -54,7 +54,6 @@ export default {
     },
     methods: {
         toggleSubscription() {
-            console.log('subscription()', this.subscription, this.subscriptions);
             if(!__auth()) {
                 alert("Please login to subrice");
             }

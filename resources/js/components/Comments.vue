@@ -7,22 +7,6 @@
                 <small>Add comment</small>
             </button>
         </div>
-        <!-- <div class="media my-3" v-for="comment in comments.data">
-          <avatar :name="comment.user.name" :size="30" class="mr-3"/>
-          <div class="media-body">
-            <h6 class="mt-0">
-                 {{comment.name }}
-            </h6>
-            <small>
-               {{ comment.body }}
-            </small>
-            <div class="d-flex">
-                    <vote :default_votes="comment.votes" :entity_id="comment.id" :entity_owner="comment.user.id" ></vote>
-                    <button class="btn btn-sm btn-default ml-2">Add Reply</button>
-            </div>
-            <replies :comment="comment"></replies>
-          </div>
-        </div> -->
         <comment  v-for='comment in comments.data' :key="comment.id" :comment="comment" :video="video" ></comment>
     </div>
     <div class="text-center">
@@ -80,6 +64,8 @@ export default {
       })
     },
     addComment() {
+      console.log(11111)
+      event.preventDefault();
        if(! this.newComment) return
        axios.post(`/comments/${this.video.id}`, {
              body: this.newComment

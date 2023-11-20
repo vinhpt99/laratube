@@ -38,7 +38,6 @@
       },
       computed: {
           upvotes() {
-              console.log("this.votes", this.votes)
               return this.votes.filter(v => v.type === 'up')
           },
           downvotes() {
@@ -78,14 +77,10 @@
 
               axios.post(`/votes/${this.entity_id}/${type}`).then(({data}) => {
                  if(this.upvoted || this.downvoted) {
-                        console.log("default_votes", this.default_votes);
-                      
                      this.votes = this.votes.map(vote => {
-                       
                         if(vote.user_id === __auth().id) {
                               return data;
                         }
-                       
                         return vote
                      })
                  }

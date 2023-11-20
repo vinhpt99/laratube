@@ -23,6 +23,6 @@ class CommentController extends Controller
                 'body' => $request->body,
                 'video_id' => $video->id,
                 'comment_id' => $request->comment_id
-        ])->fresh();
+        ]);
     }
 }

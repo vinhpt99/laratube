@@ -43,8 +43,9 @@ class ChannelController extends Controller
     public function show(string $id)
     {
         $channel = Chanel::find($id);
+        $videos  = $channel->videos()->paginate(5);
        
-        return view('channels.show', compact('channel'));
+        return view('channels.show', compact('channel', 'videos'));
     }
 
     /**

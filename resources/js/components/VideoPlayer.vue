@@ -64,7 +64,6 @@ import videojs from 'video.js';
             videoPlay.on('timeupdate', function() {
                 var percentagePlayed = Math.ceil(videoPlay.currentTime() / videoPlay.duration() * 100)
                 if(percentagePlayed > 5 && viewReload) {
-                      console.log(percentagePlayed)
                       axios.put('/videos/' + window.CURRENT_VIDEO)
                       viewReload = false
                 }
